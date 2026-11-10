@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Muda</title>
+  <meta name="description" content="Plataformas 2D: Pinza, un cangrejo ermitaño, aprende que para crecer hay que soltar la casa que le queda chica.">
+  <meta name="theme-color" content="#0C2A30">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Muda">
+  <link rel="icon" type="image/png" href="icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <style>
+    :root { --mar: #0C2A30; --panel: #12363E; --linea: #2B5A62; --papel: #FDF7EA; --tenue: #9FC9C2; --perla: #FFE59A; --tinta: #12302D; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--mar); color: var(--papel); overflow: hidden;
+      font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; -webkit-user-select: none; user-select: none;
+      -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
+    /* El juego queda dentro de la zona segura (sin el notch) */
+    #game { position: fixed; inset: 0;
+      padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+
+    /* Aviso para girar el teléfono */
+    #rotate { display: none; position: fixed; inset: 0; z-index: 10; background: var(--mar);
+      flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 24px; }
+    #rotate .phone { width: 46px; height: 80px; border: 4px solid var(--perla); border-radius: 10px; animation: girar 1.8s ease-in-out infinite; }
+    #rotate p { margin: 0; font-size: 18px; line-height: 1.5; max-width: 22ch; }
+    @keyframes girar { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+    @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
+    @media (prefers-reduced-motion: reduce) { #rotate .phone { animation: none; transform: rotate(-90deg); } }
+
+    /* Avisos (versión nueva, listo sin internet) */
+    #toast { position: fixed; z-index: 20; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 150%);
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; max-width: calc(100% - 24px);
+      background: var(--panel); border: 2px solid var(--linea); border-radius: 14px; padding: 10px 14px; font-size: 15px;
+      transition: transform .25s ease; }
+    #toast.open { transform: translate(-50%, 0); }
+    button { font: inherit; font-size: 15px; font-weight: 600; border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer;
+      background: var(--papel); color: var(--tinta); }
+    button.ghost { background: transparent; color: var(--papel); box-shadow: inset 0 0 0 2px var(--linea); }
+
+    /* Guía para instalar en iPhone */
+    #ios-help { display: none; position: fixed; inset: 0; z-index: 30; background: rgba(7, 32, 42, .92);
+      align-items: center; justify-content: center; padding: 24px; }
+    #ios-help.open { display: flex; }
+    #ios-help .card { background: var(--panel); border: 2px solid var(--linea); border-radius: 18px; padding: 22px; max-width: 420px; }
+    #ios-help h2 { margin: 0 0 12px; color: var(--perla); font-size: 22px; }
+    #ios-help ol { margin: 0 0 16px; padding-left: 20px; line-height: 1.6; font-size: 16px; }
+    #ios-help b { color: var(--perla); }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+
+  <div id="rotate" role="alert">
+    <div class="phone" aria-hidden="true"></div>
+    <p>Gira el teléfono para jugar</p>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <div id="ios-help" role="dialog" aria-labelledby="ios-help-title">
+    <div class="card">
+      <h2 id="ios-help-title">Instalar en iPhone</h2>
+      <ol>
+        <li>Abre este juego en <b>Safari</b>.</li>
+        <li>Toca el botón <b>Compartir</b> (el cuadrado con una flecha hacia arriba).</li>
+        <li>Elige <b>Agregar a inicio</b> y luego <b>Agregar</b>.</li>
+        <li>Abre el juego desde el ícono nuevo: se verá a pantalla completa y funcionará sin internet.</li>
+      </ol>
+      <button type="button" id="ios-help-close">Entendido</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
